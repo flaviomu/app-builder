@@ -24,19 +24,12 @@ echo "---> Installing application source"
 cp -Rf /tmp/src/. ./modules/nubomedia-app/
 cd /opt/signaling-plane/modules/nubomedia-app
 
-echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -> PWD"
-pwd
-echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -> LS -L"
-ls -l
-echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -> .."
-ls -l ..
-echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-
 echo "---> Building application from source"
 # TODO: Add build steps for your application, eg npm install, bundle install
 
 OPENXSP="openxsp"
 GRADLEW="gradlew"
+JAVADIR="/opt/signaling-plane/modules/nubomedia-app/src/main/java/"
 
 #cd /opt/signaling-plane/
 
@@ -58,7 +51,9 @@ fi
 
 
 # TODO Check LANGUAGE type and ALL CHECKS !!!!!
-/opt/signaling-plane/modules/nubomedia-app/gradlew compileJava
 
+if [ "$( ls -A $JAVADIR )" ]; then
+	echo "Java folder not empty, compiling..." 
+	/opt/signaling-plane/modules/nubomedia-app/gradlew compileJava
+fi 
 
-TEST=yes

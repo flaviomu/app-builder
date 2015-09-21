@@ -1,6 +1,7 @@
 
 IMAGE_NAME = app-builder
 
+.PHONY: build
 build:
 	docker build -t $(IMAGE_NAME) .
 

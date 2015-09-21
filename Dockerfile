@@ -32,7 +32,7 @@ RUN chown -R 1000:1000 /opt/signaling-plane/
 USER 1000
 
 # TODO: Set the default port for applications built using this image
-EXPOSE 7778
+EXPOSE 7777
 
 # TODO: Set the default CMD for the image
 # CMD ["usage"]

@@ -6,7 +6,13 @@
 # For more information see the documentation:
 #	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
 #
-
-echo $TEST
+APP="app.json"
 cd /opt/signaling-plane/modules/nubomedia-app
-exec openxsp runmod
+
+if [ -e $APP ]; then
+	echo "App.json exist"
+	exec openxsp runApp
+else
+	echo "App.json non not exist, executing runmod..."
+	exec openxsp runmod
+fi
