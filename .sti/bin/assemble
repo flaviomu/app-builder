@@ -1,0 +1,64 @@
+#!/bin/bash -e
+#
+# S2I assemble script for the 'app-builder' image.
+# The 'assemble' script builds your application source ready to run.
+#
+# For more information refer to the documentation:
+#	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
+#
+
+if [ "$1" = "-h" ]; then
+	# If the 'app-builder' assemble script is executed with '-h' flag,
+	# print the usage.
+	exec /usr/local/s2i/usage
+fi
+
+# Restore artifacts from the previous build (if they exist).
+#
+#if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
+#  echo "---> Restoring build artifacts"
+#  mv /tmp/artifacts/. ./
+#fi
+
+echo "---> Installing application source"
+cp -Rf /tmp/src/. ./modules/nubomedia-app/
+cd /opt/signaling-plane/modules/nubomedia-app
+
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -> PWD"
+pwd
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -> LS -L"
+ls -l
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -> .."
+ls -l ..
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+
+echo "---> Building application from source"
+# TODO: Add build steps for your application, eg npm install, bundle install
+
+OPENXSP="openxsp"
+GRADLEW="gradlew"
+
+#cd /opt/signaling-plane/
+
+#if [ -x $GRADLEW ]; then
+#        chmod +x $GRADLEW;
+#fi
+
+#if [ -x $OPENXSP ]; then
+#        chmod +x $OPENXSP;
+#fi
+
+if [ $PATH==*/opt/signaling-plane* ]; then
+        export PATH=$PATH:/opt/signaling-plane
+fi
+
+if [ -z $OPENXSP_HOME ]; then
+        export OPENXSP_HOME=/opt/signaling-plane
+fi
+
+
+# TODO Check LANGUAGE type and ALL CHECKS !!!!!
+/opt/signaling-plane/modules/nubomedia-app/gradlew compileJava
+
+
+TEST=yes
